@@ -1,4 +1,4 @@
-fct_lmms <- function(ps, time_col = "Day_numeric", group = "Sample_type_per_Donor"){
+function(ps, time_col = "Day_numeric", group = "Sample_type_per_Donor"){
   
   library(timeOmics)
   library(lmms)
@@ -29,7 +29,7 @@ fct_lmms <- function(ps, time_col = "Day_numeric", group = "Sample_type_per_Dono
     
     # Use lapply and a for loop to rename the row names of each data frame in the list
     otu_list <- lapply(names(otu_list), function(name) {
-    rename_row_names(otu_list[[name]], name)})
+      rename_row_names(otu_list[[name]], name)})
     names(otu_list) <- names
     
     list_lmms <- list()
@@ -52,11 +52,11 @@ fct_lmms <- function(ps, time_col = "Day_numeric", group = "Sample_type_per_Dono
     
     list_models_used <- lapply(list_lmms, function(x) x@modelsUsed) 
     vec_models_used <- unlist(list_models_used)
-    df_models_used <- data.frame(vec_models_used, row.names = rownames(df_fitted_values))
+    df_models_used <- data.frame(vec_models_used, row.names = colnames(df_fitted_values))
     
     
     list_models <- unlist(lapply(list_lmms, function(x) x@models), recursive=FALSE)
-    names(list_models) <- rownames(df_fitted_values)
+    names(list_models) <- colnames(df_fitted_values)
     
     index0_ASV <- df_models_used %>% filter(df_models_used == 0) %>% rownames()
     index0_df <- data.frame(matrix(nrow = length(index0_ASV), ncol = 4))
@@ -85,7 +85,7 @@ fct_lmms <- function(ps, time_col = "Day_numeric", group = "Sample_type_per_Dono
     
     lmms.output <- lmms::lmmSpline(data = otu, time = time,
                                    sampleID = rownames(otu), deri = FALSE,
-                                   basis = "p-spline", numCores = 4, timePredict = 1:10,
+                                   basis = "p-spline", numCores = 4, timePredict = 1:length(unique(time)),
                                    keepModels = TRUE)
     
     df_fitted_values <- as.data.frame(slot(lmms.output, 'predSpline'))
