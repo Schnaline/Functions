@@ -29,13 +29,13 @@ fct_lmms <- function(ps, time_col = "Day_numeric", group = "Sample_type_per_Dono
     
     # Use lapply and a for loop to rename the row names of each data frame in the list
     otu_list <- lapply(names(otu_list), function(name) {
-      rename_row_names(otu_list[[name]], name)})
+    rename_row_names(otu_list[[name]], name)})
     names(otu_list) <- names
     
     list_lmms <- list()
     
     for (i in names){
-      time <- as.data.frame(as.matrix(sample_data(ps_list[[i]])))[, time_col]
+      time <- as.numeric(as.data.frame(as.matrix(sample_data(ps_list[[i]])))[, time_col])
       otu <- as.data.frame(t(otu_list[[i]]))
       
       list_lmms[[i]] <- lmms::lmmSpline(data = otu, time = time,
@@ -48,7 +48,7 @@ fct_lmms <- function(ps, time_col = "Day_numeric", group = "Sample_type_per_Dono
     df_fitted_values <- data.frame(matrix(ncol = max(sample_data(ps)[,time_col])))
     
     list_fitted_values <- lapply(list_lmms, function(x) x@predSpline)
-    df_fitted_values <- bind_rows(list_fitted_values) 
+    df_fitted_values <- t(bind_rows(list_fitted_values)) 
     
     list_models_used <- lapply(list_lmms, function(x) x@modelsUsed) 
     vec_models_used <- unlist(list_models_used)
