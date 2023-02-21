@@ -1,4 +1,4 @@
-function(ps, time_col = "Day_numeric", group = "Sample_type_per_Donor"){
+fct_lmms <- function(ps, time_col = "Day_numeric", group = "Sample_type_per_Donor") {
   
   library(timeOmics)
   library(lmms)
