@@ -40,7 +40,7 @@ fct_lmms <- function(ps, time_col = "Day_numeric", group = "Sample_type_per_Dono
       
       list_lmms[[i]] <- lmms::lmmSpline(data = otu, time = time,
                                         sampleID = rownames(otu), deri = FALSE,
-                                        basis = "p-spline", numCores = 4, timePredict = 1:10,
+                                        basis = "p-spline", numCores = 4, timePredict = 1:length(unique(time)),
                                         keepModels = TRUE)
     }
     
