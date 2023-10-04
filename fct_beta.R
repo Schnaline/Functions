@@ -1,4 +1,4 @@
-fct_beta <- function(phyloseq = ps, transformation = FALSE, distance = "bray", binary = FALSE){
+fct_beta <- function(phyloseq = ps, transformation = FALSE, distance = "bray"){
   
   #source("https://raw.githubusercontent.com/fconstancias/DivComAnalyses/master/R/phyloseq_beta.R") 
   
@@ -10,7 +10,7 @@ fct_beta <- function(phyloseq = ps, transformation = FALSE, distance = "bray", b
   }
   
   ps_transformed %>%
-    phyloseq::distance(method = distance, binary = FALSE) -> dis 
+    phyloseq::distance(method = distance) -> dis 
   
   ps_transformed %>%
     ordinate(method = "PCoA",
